@@ -5,8 +5,10 @@ L'utilisateur doit aussi éviter les poissons plus gros afin de ne pas perdre de
 """
 import arcade
 
+from player import Player
+
 SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 768
+SCREEN_HEIGHT = 764
 SCREEN_TITLE = "It's a fish eat fish world!"
 
 
@@ -22,9 +24,14 @@ class MyGame(arcade.Window):
         super().__init__(width, height, title)
 
         arcade.set_background_color(arcade.color.BLUE_YONDER)
+        
+        self.back_ground = arcade.Sprite("assets/background.png")
+        self.back_ground.center_x = SCREEN_WIDTH / 2
+        self.back_ground.center_y = SCREEN_HEIGHT / 2
 
         # Si vous avez des listes de sprites, il faut les créer ici et les
         # initialiser à None.
+        self.player = Player("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
 
     def setup(self):
         """
@@ -44,6 +51,11 @@ class MyGame(arcade.Window):
         # Cette commande permet d'effacer l'écran avant de dessiner. Elle va dessiner l'arrière
         # plan selon la couleur spécifié avec la méthode "set_background_color".
         arcade.start_render()
+        self.back_ground.draw()
+
+        self.player.center_x = 200
+        self.player.center_y = 200
+        self.player.draw()
 
         # Invoquer la méthode "draw()" de vos sprites ici.
 
@@ -55,6 +67,7 @@ class MyGame(arcade.Window):
         Paramètre:
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
+        self.player.on_update(delta_time)
 
 
     def on_key_press(self, key, key_modifiers):
