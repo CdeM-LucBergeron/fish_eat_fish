@@ -7,6 +7,8 @@ import arcade
 
 from player import Player
 
+from fish_animation import FishAnimation
+
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 764
 SCREEN_TITLE = "It's a fish eat fish world!"
@@ -24,14 +26,18 @@ class MyGame(arcade.Window):
         super().__init__(width, height, title)
 
         arcade.set_background_color(arcade.color.BLUE_YONDER)
-        
-        self.back_ground = arcade.Sprite("assets/background.png")
-        self.back_ground.center_x = SCREEN_WIDTH / 2
-        self.back_ground.center_y = SCREEN_HEIGHT / 2
 
-        # Si vous avez des listes de sprites, il faut les créer ici et les
-        # initialiser à None.
-        self.player = Player("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
+        self.back_ground = None
+
+        # Player related attributes.
+        self.player = None
+        self.player_move_up = False
+        self.player_move_down = False
+        self.player_move_left = False
+        self.player_move_right = True
+
+        #self.left = FishAnimation("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
+        #self.right = FishAnimation("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png", flip=True)
 
     def setup(self):
         """
@@ -40,7 +46,11 @@ class MyGame(arcade.Window):
         """
         # C'est ici que vous allez créer vos listes de sprites et vos sprites.
         # C'est aussi ici que vous charger les sons de votre jeu.
-        pass
+        self.player = Player("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
+
+        self.back_ground = arcade.Sprite("assets/background.png")
+        self.back_ground.center_x = SCREEN_WIDTH / 2
+        self.back_ground.center_y = SCREEN_HEIGHT / 2
 
     def on_draw(self):
         """
@@ -53,11 +63,9 @@ class MyGame(arcade.Window):
         arcade.start_render()
         self.back_ground.draw()
 
-        self.player.center_x = 200
-        self.player.center_y = 200
+        self.player.current_animation.center_x = 200
+        self.player.current_animation.center_y = 200
         self.player.draw()
-
-        # Invoquer la méthode "draw()" de vos sprites ici.
 
     def on_update(self, delta_time):
         """
@@ -67,7 +75,21 @@ class MyGame(arcade.Window):
         Paramètre:
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
-        self.player.on_update(delta_time)
+        self.player.update(delta_time)
+
+    def update_player_speed(self):
+        self.player.current_animation.change_x = 0
+        self.player.current_animation.change_y = 0
+
+        if self.player_move_left and not self.player_move_right:
+            self.player.current_animation.change_x = -Player.MOVEMENT_SPEED
+        elif  self.player_move_right and not self.player_move_left:
+            self.player.current_animation.change_x = Player.MOVEMENT_SPEED
+
+        if self.player_move_up and not self.player_move_down:
+            self.player.current_animation.change_y = Player.MOVEMENT_SPEED
+        elif  self.player_move_down and not self.player_move_up:
+            self.player.current_animation.change_x = Player.MOVEMENT_SPEED
 
 
     def on_key_press(self, key, key_modifiers):
@@ -81,7 +103,14 @@ class MyGame(arcade.Window):
         Pour connaître la liste des touches possibles:
         http://arcade.academy/arcade.key.html
         """
-        pass
+        if key == arcade.key.A:
+            self.player_move_left = True
+        elif key == arcade.key.D:
+            self.player_move_right = True
+        elif key == arcade.key.W:
+            self.player_move_up = True
+        elif key == arcade.key.S:
+            self.player_move_down = True
 
     def on_key_release(self, key, key_modifiers):
         """
@@ -90,7 +119,14 @@ class MyGame(arcade.Window):
             - key: la touche relâchée
             - key_modifiers: est-ce que l'usager appuie sur "shift" ou "ctrl" ?
         """
-        pass
+        if key == arcade.key.A:
+            self.player_move_left = True
+        elif key == arcade.key.D:
+            self.player_move_right = True
+        elif key == arcade.key.W:
+            self.player_move_up = True
+        elif key == arcade.key.S:
+            self.player_move_down = True
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         """
