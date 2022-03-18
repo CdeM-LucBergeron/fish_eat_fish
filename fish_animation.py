@@ -5,18 +5,26 @@ https://gamedev.stackexchange.com/questions/44118/how-to-slow-down-a-sprite-that
 Used this site to implement a slower animation.
 """
 import arcade
+import PIL
 
 
 class FishAnimation(arcade.Sprite):
     ANIMATION_SPEED = 15.0
 
-    def __init__(self, spritesheet_path):
+    def __init__(self, spritesheet_path, flip=False):
         super().__init__()
 
         textures = arcade.load_spritesheet(spritesheet_path, 498, 327, 3, 12)
-        self.textures = textures
+        if flip:
+            flipped_textures = []
+            for texture in textures:
+                image = PIL.ImageOps.mirror(texture.image)
+                flipped_textures.append(arcade.Texture(f"{texture.name}-flipped", image, "Simple", 4.5))
+            self.textures = flipped_textures
+        else:
+            self.textures = textures
 
-        self.scale = 0.5
+        self.scale = 0.35
         self.current_texture = 0
         self.set_texture(self.current_texture)
 
