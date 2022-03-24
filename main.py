@@ -83,13 +83,13 @@ class MyGame(arcade.Window):
 
         if self.player_move_left and not self.player_move_right:
             self.player.current_animation.change_x = -Player.MOVEMENT_SPEED
-        elif  self.player_move_right and not self.player_move_left:
+        elif self.player_move_right and not self.player_move_left:
             self.player.current_animation.change_x = Player.MOVEMENT_SPEED
 
         if self.player_move_up and not self.player_move_down:
             self.player.current_animation.change_y = Player.MOVEMENT_SPEED
-        elif  self.player_move_down and not self.player_move_up:
-            self.player.current_animation.change_x = Player.MOVEMENT_SPEED
+        elif self.player_move_down and not self.player_move_up:
+            self.player.current_animation.change_y = -Player.MOVEMENT_SPEED
 
 
     def on_key_press(self, key, key_modifiers):
@@ -105,12 +105,16 @@ class MyGame(arcade.Window):
         """
         if key == arcade.key.A:
             self.player_move_left = True
+            self.update_player_speed()
         elif key == arcade.key.D:
             self.player_move_right = True
+            self.update_player_speed()
         elif key == arcade.key.W:
             self.player_move_up = True
+            self.update_player_speed()
         elif key == arcade.key.S:
             self.player_move_down = True
+            self.update_player_speed()
 
     def on_key_release(self, key, key_modifiers):
         """
@@ -120,13 +124,17 @@ class MyGame(arcade.Window):
             - key_modifiers: est-ce que l'usager appuie sur "shift" ou "ctrl" ?
         """
         if key == arcade.key.A:
-            self.player_move_left = True
+            self.player_move_left = False
+            self.update_player_speed()
         elif key == arcade.key.D:
-            self.player_move_right = True
+            self.player_move_right = False
+            self.update_player_speed()
         elif key == arcade.key.W:
-            self.player_move_up = True
+            self.player_move_up = False
+            self.update_player_speed()
         elif key == arcade.key.S:
-            self.player_move_down = True
+            self.player_move_down = False
+            self.update_player_speed()
 
     def on_mouse_motion(self, x, y, delta_x, delta_y):
         """
