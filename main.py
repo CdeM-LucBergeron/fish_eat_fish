@@ -3,11 +3,13 @@ Simple jeu fait avec arcade.
 Le jeu consiste a ce que notre poisson mange des poissons plus petits que lui pour grossir.
 L'utilisateur doit aussi éviter les poissons plus gros afin de ne pas perdre de vie.
 """
+import random
+
 import arcade
 
 from player import Player, Direction
-
 from fish_animation import FishAnimation
+from enemy_fish import EnemyFish
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 764
@@ -36,16 +38,13 @@ class MyGame(arcade.Window):
         self.player_move_left = False
         self.player_move_right = True
 
-        #self.left = FishAnimation("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
-        #self.right = FishAnimation("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png", flip=True)
+        self.enemy_list = None
 
     def setup(self):
         """
         Configurer les variables de votre jeu ici. Il faut appeler la méthode une nouvelle
         fois si vous recommencer une nouvelle partie.
         """
-        # C'est ici que vous allez créer vos listes de sprites et vos sprites.
-        # C'est aussi ici que vous charger les sons de votre jeu.
         self.player = Player("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
         self.player.current_animation.center_x = 200
         self.player.current_animation.center_y = 200
@@ -53,6 +52,17 @@ class MyGame(arcade.Window):
         self.back_ground = arcade.Sprite("assets/background.png")
         self.back_ground.center_x = SCREEN_WIDTH / 2
         self.back_ground.center_y = SCREEN_HEIGHT / 2
+
+        self.enemy_list = arcade.SpriteList()
+
+        # Each two seconds, a new enemy fish will spawn.
+        arcade.schedule(self.spawn_enemy_fish, 2)
+
+    def spawn_enemy_fish(self, delta_time):
+        enemy = EnemyFish("assets/2dfish/spritesheets/__cartoon_fish_06_red_idle.png")
+        enemy.center_x = random.randrange(200, SCREEN_WIDTH)
+        enemy.center_y = random.randrange(200, SCREEN_HEIGHT)
+        self.enemy_list.append(enemy)
 
     def on_draw(self):
         """
@@ -67,6 +77,8 @@ class MyGame(arcade.Window):
 
         self.player.draw()
 
+        self.enemy_list.draw()
+
     def on_update(self, delta_time):
         """
         Toute la logique pour déplacer les objets de votre jeu et de
@@ -76,6 +88,7 @@ class MyGame(arcade.Window):
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
         self.player.update(delta_time)
+        self.enemy_list.update()
 
     def update_player_speed(self):
         self.player.current_animation.change_x = 0
