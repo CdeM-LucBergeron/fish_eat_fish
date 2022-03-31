@@ -5,7 +5,7 @@ L'utilisateur doit aussi éviter les poissons plus gros afin de ne pas perdre de
 """
 import arcade
 
-from player import Player
+from player import Player, Direction
 
 from fish_animation import FishAnimation
 
@@ -47,6 +47,8 @@ class MyGame(arcade.Window):
         # C'est ici que vous allez créer vos listes de sprites et vos sprites.
         # C'est aussi ici que vous charger les sons de votre jeu.
         self.player = Player("assets/2dfish/spritesheets/__cartoon_fish_06_yellow_idle.png")
+        self.player.current_animation.center_x = 200
+        self.player.current_animation.center_y = 200
 
         self.back_ground = arcade.Sprite("assets/background.png")
         self.back_ground.center_x = SCREEN_WIDTH / 2
@@ -63,8 +65,6 @@ class MyGame(arcade.Window):
         arcade.start_render()
         self.back_ground.draw()
 
-        self.player.current_animation.center_x = 200
-        self.player.current_animation.center_y = 200
         self.player.draw()
 
     def on_update(self, delta_time):
@@ -82,8 +82,10 @@ class MyGame(arcade.Window):
         self.player.current_animation.change_y = 0
 
         if self.player_move_left and not self.player_move_right:
+            self.player.change_direction(Direction.LEFT)
             self.player.current_animation.change_x = -Player.MOVEMENT_SPEED
         elif self.player_move_right and not self.player_move_left:
+            self.player.change_direction(Direction.RIGHT)
             self.player.current_animation.change_x = Player.MOVEMENT_SPEED
 
         if self.player_move_up and not self.player_move_down:

@@ -9,15 +9,15 @@ class Direction(Enum):
     RIGHT = 1
 
 class Player:
-    MOVEMENT_SPEED = 2.0
+    MOVEMENT_SPEED = 5.0
     
     def __init__(self, spritesheet_path):
         self.left_animation = FishAnimation(spritesheet_path)
         self.right_animation = FishAnimation(spritesheet_path, flip=True)
         self.current_animation = None
 
-        self.face_left = True
-        if self.face_left:
+        self.direction = Direction.LEFT
+        if self.direction == Direction.LEFT:
             self.current_animation = self.left_animation
         else:
             self.current_animation = self.right_animation
@@ -25,19 +25,25 @@ class Player:
     def draw(self):
         self.current_animation.draw()
 
-    def update(self, delta_time):
-        #print(f"Current change_x = {self.current_animation.change_x}, change_y = {self.current_animation.change_y}")
+    def update(self, delta_time):      
         self.current_animation.center_x += self.current_animation.change_x
         self.current_animation.center_y += self.current_animation.change_y
 
         self.current_animation.on_update(delta_time)
 
-    def change_direction(self):
-        self.face_left = not self.face_left
-        if self.face_left:
+    def change_direction(self, new_direction):
+        old_direction = self.direction
+        if old_direction == new_direction:
+            return
+        self.direction = new_direction
+        if self.direction == Direction.LEFT:
+            self.left_animation.center_x = self.current_animation.center_x
+            self.left_animation.center_y = self.current_animation.center_y
             self.current_animation = self.left_animation
         else:
-            self.current_animation = self.right_animation        
+            self.right_animation.center_x = self.current_animation.center_x
+            self.right_animation.center_y = self.current_animation.center_y            
+            self.current_animation = self.right_animation      
         
 
     
