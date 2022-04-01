@@ -29,7 +29,9 @@ FISH_SCALE = ['XXXS', 'XXS', 'XS', 'S', 'M', 'ML', 'L', 'XL']
 
 
 class EnemyFish(FishAnimation):
-    ENEMY_SPEED = 4.0
+    SMALL_ENEMY_SPEED = 5.0
+    MEDIUM_ENEMY_SPEED = 4.0
+    LARGE_ENEMY_SPEED = 2.0
 
     def __init__(self, direction, spawn_point):
         # Randomize the fish color and size
@@ -42,15 +44,23 @@ class EnemyFish(FishAnimation):
             flipped, 
             FISH_SIZE_TO_SCALE[fish_scale[0]]
         )
+
+        if fish_scale[0] in FISH_SCALE[0:2]:
+            self.change_x = EnemyFish.SMALL_ENEMY_SPEED
+        elif fish_scale[0] in FISH_SCALE[3:5]:
+            self.change_x = EnemyFish.MEDIUM_ENEMY_SPEED
+        else:
+            self.change_x = EnemyFish.LARGE_ENEMY_SPEED
+
         self.direction = direction
         self.center_x = spawn_point[0]
         self.center_y = spawn_point[1]
 
     def update(self):
         if self.direction == Direction.LEFT:
-            self.center_x += -EnemyFish.ENEMY_SPEED
+            self.center_x += -self.change_x
         else:
-            self.center_x += EnemyFish.ENEMY_SPEED
+            self.center_x += self.change_x
 
         # Are we going out of screen? If so, despawn
         if self.direction == Direction.LEFT:

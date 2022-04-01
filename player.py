@@ -10,6 +10,7 @@ class Direction(Enum):
 
 class Player:
     MOVEMENT_SPEED = 5.0
+    PLAYER_LIVES = 3
     
     def __init__(self, spritesheet_path):
         self.left_animation = FishAnimation(spritesheet_path, scale=0.10)
@@ -21,6 +22,8 @@ class Player:
             self.current_animation = self.left_animation
         else:
             self.current_animation = self.right_animation
+
+        self.lives = Player.PLAYER_LIVES
 
     def draw(self):
         self.current_animation.draw()

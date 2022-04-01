@@ -37,6 +37,9 @@ class MyGame(arcade.Window):
 
         self.enemy_list = None
 
+        self.game_camera = None
+        self.gui_camera = None
+
     def setup(self):
         """
         Configurer les variables de votre jeu ici. Il faut appeler la méthode une nouvelle
@@ -52,13 +55,16 @@ class MyGame(arcade.Window):
 
         self.enemy_list = arcade.SpriteList()
 
+        self.game_camera = arcade.Camera(gc.SCREEN_WIDTH, gc.SCREEN_HEIGHT)
+        self.gui_camera = arcade.Camera(gc.SCREEN_WIDTH, gc.SCREEN_HEIGHT)
+
         # Each two seconds, a new enemy fish will spawn.
         arcade.schedule(self.spawn_enemy_fish, 2)
 
     def spawn_enemy_fish(self, delta_time):
         direction = Direction.LEFT if random.randint(0, 1) == 1 else Direction.RIGHT
         x = -50 if direction == Direction.RIGHT else gc.SCREEN_WIDTH + 50
-        y = random.randrange(50, gc.SCREEN_HEIGHT - 50)
+        y = random.randrange(50, gc.SCREEN_HEIGHT - 150)
         enemy = EnemyFish(direction, (x, y))
         
         self.enemy_list.append(enemy)
@@ -72,13 +78,21 @@ class MyGame(arcade.Window):
         # Cette commande permet d'effacer l'écran avant de dessiner. Elle va dessiner l'arrière
         # plan selon la couleur spécifié avec la méthode "set_background_color".
         arcade.start_render()
+
+        # Game camera rendering
+        self.game_camera.use()
         self.back_ground.draw()
 
         self.player.draw()
 
         self.enemy_list.draw()
 
-        arcade.draw_text(f"Fish count = {len(self.enemy_list)}", 10, 10, arcade.color.BLACK_BEAN, 20)
+        # Gui camera rendering
+        self.gui_camera.use()
+        arcade.draw_rectangle_filled(gc.SCREEN_WIDTH // 2, gc.SCREEN_HEIGHT - 25, gc.SCREEN_WIDTH, 50, arcade.color.BLEU_DE_FRANCE)
+        arcade.draw_text("Live(s) left", 10, gc.SCREEN_HEIGHT - 25, arcade.color.WHITE_SMOKE, 20, width=200, align="center")
+
+        #arcade.draw_text(f"Fish count = {len(self.enemy_list)}", 10, 10, arcade.color.BLACK_BEAN, 20)
 
     def on_update(self, delta_time):
         """
