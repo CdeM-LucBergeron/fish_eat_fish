@@ -49,7 +49,7 @@ class MyGame(arcade.Window):
         self.player.current_animation.center_x = 200
         self.player.current_animation.center_y = 200
 
-        self.back_ground = arcade.Sprite("assets/background.png")
+        self.back_ground = arcade.Sprite("assets/Background.png")
         self.back_ground.center_x = gc.SCREEN_WIDTH / 2
         self.back_ground.center_y = gc.SCREEN_HEIGHT / 2
 
