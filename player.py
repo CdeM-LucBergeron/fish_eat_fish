@@ -12,8 +12,8 @@ class Player:
     MOVEMENT_SPEED = 5.0
     
     def __init__(self, spritesheet_path):
-        self.left_animation = FishAnimation(spritesheet_path)
-        self.right_animation = FishAnimation(spritesheet_path, flip=True)
+        self.left_animation = FishAnimation(spritesheet_path, scale=0.10)
+        self.right_animation = FishAnimation(spritesheet_path, flip=True, scale=0.10)
         self.current_animation = None
 
         self.direction = Direction.LEFT

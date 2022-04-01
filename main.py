@@ -10,10 +10,7 @@ import arcade
 from player import Player, Direction
 from fish_animation import FishAnimation
 from enemy_fish import EnemyFish
-
-SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 764
-SCREEN_TITLE = "It's a fish eat fish world!"
+import game_constants as gc
 
 
 class MyGame(arcade.Window):
@@ -50,8 +47,8 @@ class MyGame(arcade.Window):
         self.player.current_animation.center_y = 200
 
         self.back_ground = arcade.Sprite("assets/background.png")
-        self.back_ground.center_x = SCREEN_WIDTH / 2
-        self.back_ground.center_y = SCREEN_HEIGHT / 2
+        self.back_ground.center_x = gc.SCREEN_WIDTH / 2
+        self.back_ground.center_y = gc.SCREEN_HEIGHT / 2
 
         self.enemy_list = arcade.SpriteList()
 
@@ -59,9 +56,11 @@ class MyGame(arcade.Window):
         arcade.schedule(self.spawn_enemy_fish, 2)
 
     def spawn_enemy_fish(self, delta_time):
-        enemy = EnemyFish("assets/2dfish/spritesheets/__cartoon_fish_06_red_idle.png")
-        enemy.center_x = random.randrange(200, SCREEN_WIDTH)
-        enemy.center_y = random.randrange(200, SCREEN_HEIGHT)
+        direction = Direction.LEFT if random.randint(0, 1) == 1 else Direction.RIGHT
+        x = -50 if direction == Direction.RIGHT else gc.SCREEN_WIDTH + 50
+        y = random.randrange(50, gc.SCREEN_HEIGHT - 50)
+        enemy = EnemyFish(direction, (x, y))
+        
         self.enemy_list.append(enemy)
 
     def on_draw(self):
@@ -78,6 +77,8 @@ class MyGame(arcade.Window):
         self.player.draw()
 
         self.enemy_list.draw()
+
+        arcade.draw_text(f"Fish count = {len(self.enemy_list)}", 10, 10, arcade.color.BLACK_BEAN, 20)
 
     def on_update(self, delta_time):
         """
@@ -183,7 +184,7 @@ class MyGame(arcade.Window):
 
 def main():
     """ Main method """
-    game = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    game = MyGame(gc.SCREEN_WIDTH, gc.SCREEN_HEIGHT, gc.SCREEN_TITLE)
     game.setup()
     arcade.run()
 

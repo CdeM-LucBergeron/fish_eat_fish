@@ -11,7 +11,7 @@ import PIL
 class FishAnimation(arcade.Sprite):
     ANIMATION_SPEED = 15.0
 
-    def __init__(self, spritesheet_path, flip=False):
+    def __init__(self, spritesheet_path, flip=False, scale=0.35):
         super().__init__()
 
         textures = arcade.load_spritesheet(spritesheet_path, 498, 327, 3, 12)
@@ -24,7 +24,7 @@ class FishAnimation(arcade.Sprite):
         else:
             self.textures = textures
 
-        self.scale = 0.35
+        self.scale = scale
         self.current_texture = 0
         self.set_texture(self.current_texture)
 
