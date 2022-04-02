@@ -40,6 +40,8 @@ class MyGame(arcade.Window):
         self.game_camera = None
         self.gui_camera = None
 
+        self.time_elapsed = 0.0
+
     def setup(self):
         """
         Configurer les variables de votre jeu ici. Il faut appeler la méthode une nouvelle
@@ -90,7 +92,9 @@ class MyGame(arcade.Window):
         # Gui camera rendering
         self.gui_camera.use()
         arcade.draw_rectangle_filled(gc.SCREEN_WIDTH // 2, gc.SCREEN_HEIGHT - 25, gc.SCREEN_WIDTH, 50, arcade.color.BLEU_DE_FRANCE)
-        arcade.draw_text("Live(s) left", 10, gc.SCREEN_HEIGHT - 25, arcade.color.WHITE_SMOKE, 20, width=200, align="center")
+        arcade.draw_text("Lives :", 10, gc.SCREEN_HEIGHT - 25, arcade.color.WHITE_SMOKE, 20, width=200, align="center")
+        
+        arcade.draw_text(f"Time played : {self.time_elapsed / 60000}", gc.SCREEN_WIDTH - 400, gc.SCREEN_HEIGHT - 25, arcade.color.WHITE_SMOKE, 20, width=200, align="center")
 
         #arcade.draw_text(f"Fish count = {len(self.enemy_list)}", 10, 10, arcade.color.BLACK_BEAN, 20)
 
@@ -102,6 +106,7 @@ class MyGame(arcade.Window):
         Paramètre:
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
+        self.time_elapsed += delta_time
         self.player.update(delta_time)
         self.enemy_list.update()
 
