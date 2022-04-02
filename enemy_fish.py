@@ -29,14 +29,14 @@ FISH_SCALE = ['XXXS', 'XXS', 'XS', 'S', 'M', 'ML', 'L', 'XL']
 
 
 class EnemyFish(FishAnimation):
-    SMALL_ENEMY_SPEED = 5.0
-    MEDIUM_ENEMY_SPEED = 4.0
+    SMALL_ENEMY_SPEED = 4.0
+    MEDIUM_ENEMY_SPEED = 3.0
     LARGE_ENEMY_SPEED = 2.0
 
     def __init__(self, direction, spawn_point):
         # Randomize the fish color and size
         fish_color = randint(1, 5)
-        fish_scale = choices(FISH_SCALE, weights=(70, 55, 45, 35, 30, 25, 20, 15), k=1)
+        fish_scale = choices(FISH_SCALE, weights=(80, 65, 45, 35, 30, 25, 20, 15), k=1)
         flipped = False if direction == Direction.LEFT else True
 
         super().__init__(
