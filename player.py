@@ -13,8 +13,8 @@ class Player:
     PLAYER_LIVES = 3
     
     def __init__(self, spritesheet_path):
-        self.left_animation = FishAnimation(spritesheet_path, scale=0.10)
-        self.right_animation = FishAnimation(spritesheet_path, flip=True, scale=0.10)
+        self.left_animation = FishAnimation(spritesheet_path, scale=0.15)
+        self.right_animation = FishAnimation(spritesheet_path, flip=True, scale=0.15)
         self.current_animation = None
 
         self.direction = Direction.LEFT
