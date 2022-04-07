@@ -95,7 +95,9 @@ class MyGame(arcade.Window):
         # Gui camera rendering
         self.gui_camera.use()
         arcade.draw_rectangle_filled(gc.SCREEN_WIDTH // 2, gc.SCREEN_HEIGHT - 25, gc.SCREEN_WIDTH, 50, arcade.color.BLEU_DE_FRANCE)
-        arcade.draw_text("Lives :", 10, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=200, align="center")
+
+        arcade.draw_text("Lives :", 5, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=100, align="center")
+        
         current_time = datetime.time(second=int(self.time_elapsed)).strftime("%M:%S")       
         arcade.draw_text(f"Time played : {current_time}", gc.SCREEN_WIDTH - 350, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=400, align="center")
 
