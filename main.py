@@ -99,9 +99,12 @@ class MyGame(arcade.Window):
         arcade.draw_text("Lives :", 5, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=100, align="center")
         
         current_time = datetime.time(second=int(self.time_elapsed)).strftime("%M:%S")       
-        arcade.draw_text(f"Time played : {current_time}", gc.SCREEN_WIDTH - 350, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=400, align="center")
-
-        #arcade.draw_text(f"Fish count = {len(self.enemy_list)}", 10, 10, arcade.color.BLACK_BEAN, 20)
+        arcade.draw_text(
+            f"Time played : {current_time}", 
+            gc.SCREEN_WIDTH - 350, 
+            gc.SCREEN_HEIGHT - 35, 
+            arcade.color.WHITE_SMOKE, 
+            20, width=400, align="center")
 
     def on_update(self, delta_time):
         """
