@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import DefaultDict
 
 from fish_animation import FishAnimation
 
@@ -8,13 +7,14 @@ class Direction(Enum):
     LEFT = 0
     RIGHT = 1
 
+
 class Player:
     MOVEMENT_SPEED = 5.0
     PLAYER_LIVES = 3
     
     def __init__(self, spritesheet_path):
-        self.left_animation = FishAnimation(spritesheet_path, scale=0.15)
-        self.right_animation = FishAnimation(spritesheet_path, flip=True, scale=0.15)
+        self.left_animation = FishAnimation(spritesheet_path, scale=0.10)
+        self.right_animation = FishAnimation(spritesheet_path, flip=True, scale=0.10)
         self.current_animation = None
 
         self.direction = Direction.LEFT
@@ -47,6 +47,3 @@ class Player:
             self.right_animation.center_x = self.current_animation.center_x
             self.right_animation.center_y = self.current_animation.center_y            
             self.current_animation = self.right_animation      
-        
-
-    
