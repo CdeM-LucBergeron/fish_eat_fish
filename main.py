@@ -10,7 +10,6 @@ import time
 import arcade
 
 from player import Player, Direction
-from fish_animation import FishAnimation
 from enemy_fish import EnemyFish
 import game_constants as gc
 
@@ -135,7 +134,6 @@ class MyGame(arcade.Window):
         elif self.player_move_down and not self.player_move_up:
             self.player.current_animation.change_y = -Player.MOVEMENT_SPEED
 
-
     def on_key_press(self, key, key_modifiers):
         """
         Cette méthode est invoquée à chaque fois que l'usager tape une touche
@@ -179,35 +177,6 @@ class MyGame(arcade.Window):
         elif key == arcade.key.S:
             self.player_move_down = False
             self.update_player_speed()
-
-    def on_mouse_motion(self, x, y, delta_x, delta_y):
-        """
-        Méthode invoquée lorsque le curseur de la souris se déplace dans la fenêtre.
-        Paramètres:
-            - x, y: les coordonnées de l'emplacement actuel de la sourir
-            - delta_X, delta_y: le changement (x et y) depuis la dernière fois que la méthode a été invoqué.
-        """
-        pass
-
-    def on_mouse_press(self, x, y, button, key_modifiers):
-        """
-        Méthode invoquée lorsque l'usager clique un bouton de la souris.
-        Paramètres:
-            - x, y: coordonnées où le bouton a été cliqué
-            - button: le bouton de la souris appuyé
-            - key_modifiers: est-ce que l'usager appuie sur "shift" ou "ctrl" ?
-        """
-        pass
-
-    def on_mouse_release(self, x, y, button, key_modifiers):
-        """
-        Méthode invoquée lorsque l'usager relâche le bouton cliqué de la souris.
-        Paramètres:
-            - x, y: coordonnées où le bouton a été relâché
-            - button: le bouton de la souris relâché
-            - key_modifiers: est-ce que l'usager appuie sur "shift" ou "ctrl" ?
-        """
-        pass
 
 
 def main():
