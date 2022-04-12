@@ -1,7 +1,5 @@
 from random import choices, randint
 
-import arcade
-
 from fish_animation import FishAnimation
 from player import Direction
 import game_constants as gc
@@ -73,5 +71,4 @@ class EnemyFish(FishAnimation):
                 self.remove_from_sprite_lists()
                 return
 
-        
         return super().on_update()
