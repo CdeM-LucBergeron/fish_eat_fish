@@ -66,6 +66,11 @@ class MyGame(arcade.Window):
         arcade.schedule(self.spawn_enemy_fish, 2)
 
     def spawn_enemy_fish(self, delta_time):
+        """
+        Callback method to spawn a new fish.
+        :param delta_time: The elapsed time.
+        :return: None
+        """
         direction = Direction.LEFT if random.randint(0, 1) == 1 else Direction.RIGHT
         x = -50 if direction == Direction.RIGHT else gc.SCREEN_WIDTH + 50
         y = random.randrange(50, gc.SCREEN_HEIGHT - 150)
@@ -78,9 +83,6 @@ class MyGame(arcade.Window):
         C'est la méthode que Arcade invoque à chaque "frame" pour afficher les éléments
         de votre jeu à l'écran.
         """
-
-        # Cette commande permet d'effacer l'écran avant de dessiner. Elle va dessiner l'arrière
-        # plan selon la couleur spécifié avec la méthode "set_background_color".
         arcade.start_render()
 
         # Game camera rendering
@@ -119,6 +121,10 @@ class MyGame(arcade.Window):
         self.enemy_list.update()
 
     def update_player_speed(self):
+        """
+        Will update player position according to various movement flags.
+        :return: None
+        """
         self.player.current_animation.change_x = 0
         self.player.current_animation.change_y = 0
 

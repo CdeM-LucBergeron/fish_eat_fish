@@ -4,11 +4,17 @@ from fish_animation import FishAnimation
 
 
 class Direction(Enum):
+    """
+    Simple direction enum for left and right.
+    """
     LEFT = 0
     RIGHT = 1
 
 
 class Player:
+    """
+    Player class for the fish!
+    """
     MOVEMENT_SPEED = 5.0
     PLAYER_LIVES = 3
     
@@ -35,6 +41,11 @@ class Player:
         self.current_animation.on_update(delta_time)
 
     def change_direction(self, new_direction):
+        """
+        Used to update the animation according to the direction.
+        :param new_direction: The new direction.
+        :return: None
+        """
         old_direction = self.direction
         if old_direction == new_direction:
             return

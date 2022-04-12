@@ -9,6 +9,9 @@ import PIL
 
 
 class FishAnimation(arcade.Sprite):
+    """
+    Class to have an animation. Each image is taken from a spritesheet.
+    """
     ANIMATION_SPEED = 15.0
 
     def __init__(self, spritesheet_path, flip=False, scale=0.35):

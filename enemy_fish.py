@@ -28,6 +28,9 @@ FISH_SCALE = ['XXXXS', 'XXXS', 'XXS', 'XS', 'S', 'M', 'ML', 'L', 'XL']
 
 
 class EnemyFish(FishAnimation):
+    """
+    Enemy fish based on FishAnimation. Will have randomized size and colors.
+    """
     SMALL_ENEMY_SPEED = 4.0
     MEDIUM_ENEMY_SPEED = 3.0
     LARGE_ENEMY_SPEED = 2.0
