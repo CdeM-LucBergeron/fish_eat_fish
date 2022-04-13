@@ -3,12 +3,11 @@ Simple jeu fait avec arcade.
 Le jeu consiste a ce que notre poisson mange des poissons plus petits que lui pour grossir.
 L'utilisateur doit aussi éviter les poissons plus gros afin de ne pas perdre de vie.
 """
-import datetime
 import random
-import time
 
 import arcade
 
+from game_time import GameElapsedTime
 from player import Player, Direction
 from enemy_fish import EnemyFish
 import game_constants as gc
@@ -41,8 +40,7 @@ class MyGame(arcade.Window):
         self.game_camera = None
         self.gui_camera = None
 
-        self.time_elapsed = None
-        self.game_start = time.time()
+        self.game_timer = GameElapsedTime()
 
     def setup(self):
         """
@@ -98,10 +96,9 @@ class MyGame(arcade.Window):
         arcade.draw_rectangle_filled(gc.SCREEN_WIDTH // 2, gc.SCREEN_HEIGHT - 25, gc.SCREEN_WIDTH, 50, arcade.color.BLEU_DE_FRANCE)
 
         arcade.draw_text("Lives :", 5, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=100, align="center")
-        
-        current_time = datetime.time(second=int(self.time_elapsed)).strftime("%M:%S")       
+
         arcade.draw_text(
-            f"Time played : {current_time}", 
+            f"Time played : {self.game_timer.get_time_string()}",
             gc.SCREEN_WIDTH - 350, 
             gc.SCREEN_HEIGHT - 35, 
             arcade.color.WHITE_SMOKE, 
@@ -116,7 +113,7 @@ class MyGame(arcade.Window):
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
         # Calculate elapsed time
-        self.time_elapsed = time.time() - self.game_start
+        self.game_timer.accumulate()
         self.player.update(delta_time)
         self.enemy_list.update()
 
