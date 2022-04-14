@@ -114,6 +114,7 @@ class MyGame(arcade.Window):
         """
         # Calculate elapsed time
         self.game_timer.accumulate()
+
         self.player.update(delta_time)
         self.enemy_list.update()
 
@@ -146,7 +147,7 @@ class MyGame(arcade.Window):
             - key_modifiers: est-ce que l'usager appuie sur "shift" ou "ctrl" ?
 
         Pour connaître la liste des touches possibles:
-        http://arcade.academy/arcade.key.html
+        https://api.arcade.academy/en/latest/arcade.key.html
         """
         if key == arcade.key.A:
             self.player_move_left = True
