@@ -24,7 +24,7 @@ FISH_SIZE_TO_SCALE = {
     'XL': 0.60,
 }
 
-FISH_SCALE = FISH_SIZE_TO_SCALE.keys()
+FISH_SCALE = list(FISH_SIZE_TO_SCALE.keys())
 
 """
 Liste qui permet de modifier les chances qu'un poisson d'une certaine taille puisse être
