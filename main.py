@@ -12,6 +12,8 @@ from player import Player, Direction
 from enemy_fish import EnemyFish
 import game_constants as gc
 
+# Commentaire qui va provoquer une erreur...
+
 
 class MyGame(arcade.Window):
     """
