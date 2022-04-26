@@ -13,7 +13,7 @@ from enemy_fish import EnemyFish
 import game_constants as gc
 
 # Commentaire qui va provoquer une erreur...
-test = "Grrr"
+
 
 class MyGame(arcade.Window):
     """
