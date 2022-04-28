@@ -28,7 +28,7 @@ FISH_SCALE = list(FISH_SIZE_TO_SCALE.keys())
 
 """
 Liste qui permet de modifier les chances qu'un poisson d'une certaine taille puisse être
-choisi au hasard. Si vous voulez qu'un taille ait moins de chance d'être choisi, diminuer le
+choisi au hasard. Si vous voulez qu'une taille ait moins de chance d'être choisie, diminuer le
 chiffre associé.
 """
 FISH_SCALE_WEIGHT = (
