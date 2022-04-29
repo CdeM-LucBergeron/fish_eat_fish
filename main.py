@@ -11,6 +11,7 @@ from game_time import GameElapsedTime
 from player import Player, Direction
 from enemy_fish import EnemyFish
 import game_constants as gc
+from game_state import GameState
 
 
 class MyGame(arcade.Window):
@@ -41,6 +42,10 @@ class MyGame(arcade.Window):
         self.gui_camera = None
 
         self.game_timer = GameElapsedTime()
+
+        self.game_state = GameState.GAME_RUNNING
+
+        self.debug_mode = False
 
     def setup(self):
         """
@@ -89,6 +94,10 @@ class MyGame(arcade.Window):
 
         self.player.draw()
 
+        if self.debug_mode:
+            self.player.current_animation.draw_hit_box()
+            self.enemy_list.draw_hit_boxes()
+
         self.enemy_list.draw()
 
         # Gui camera rendering
@@ -112,11 +121,16 @@ class MyGame(arcade.Window):
         Paramètre:
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
-        # Calculate elapsed time
-        self.game_timer.accumulate()
+        if self.game_state == GameState.GAME_RUNNING:
+            # Calculate elapsed time
+            self.game_timer.accumulate()
 
-        self.player.update(delta_time)
-        self.enemy_list.update()
+            self.player.update(delta_time)
+            self.enemy_list.update()
+
+            enemy_eaten = arcade.check_for_collision_with_list(self.player.current_animation, self.enemy_list)
+            for enemy in enemy_eaten:
+                enemy.remove_from_sprite_lists()
 
     def update_player_speed(self):
         """
@@ -161,6 +175,15 @@ class MyGame(arcade.Window):
         elif key == arcade.key.S:
             self.player_move_down = True
             self.update_player_speed()
+
+        if key == arcade.key.SPACE:
+            pass
+
+        if key == arcade.key.H:
+            self.debug_mode = not self.debug_mode
+
+        if key == arcade.key.P:
+            self.player.current_animation.scale += 0.10
 
     def on_key_release(self, key, key_modifiers):
         """
