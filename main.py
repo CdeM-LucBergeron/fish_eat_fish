@@ -88,17 +88,19 @@ class MyGame(arcade.Window):
         """
         arcade.start_render()
 
-        # Game camera rendering
-        self.game_camera.use()
         self.back_ground.draw()
 
-        self.player.draw()
+        if self.game_state == GameState.GAME_RUNNING:
+            # Game camera rendering
+            self.game_camera.use()
 
-        if self.debug_mode:
-            self.player.current_animation.draw_hit_box()
-            self.enemy_list.draw_hit_boxes()
+            self.player.draw()
 
-        self.enemy_list.draw()
+            if self.debug_mode:
+                self.player.current_animation.draw_hit_box()
+                self.enemy_list.draw_hit_boxes()
+
+            self.enemy_list.draw()
 
         # Gui camera rendering
         self.gui_camera.use()
@@ -176,8 +178,13 @@ class MyGame(arcade.Window):
             self.player_move_down = True
             self.update_player_speed()
 
-        if key == arcade.key.SPACE:
-            pass
+        if key == arcade.key.ESCAPE:
+            if self.game_state == GameState.GAME_RUNNING:
+                self.game_state = GameState.GAME_PAUSE
+                self.game_timer.pause()
+            elif self.game_state == GameState.GAME_PAUSE:
+                self.game_state = GameState.GAME_RUNNING
+                self.game_timer.resume()
 
         if key == arcade.key.H:
             self.debug_mode = not self.debug_mode

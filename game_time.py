@@ -8,6 +8,7 @@ class GameElapsedTime:
     def __init__(self):
         self.start_time = time.time()
         self.elapsed_time = None
+        self.pause_time_start = None
 
     def accumulate(self):
         """
@@ -34,4 +35,11 @@ class GameElapsedTime:
                 hours = minutes // 60
                 minutes = minutes % 60
             return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02}"
+
+    def pause(self):
+        self.pause_time_start = time.time()
+
+    def resume(self):
+        pause_elapsed_time = time.time() - self.pause_time_start
+        self.start_time += pause_elapsed_time
 
