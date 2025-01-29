@@ -11,7 +11,6 @@ from game_time import GameElapsedTime
 from player import Player, Direction
 from enemy_fish import EnemyFish
 import game_constants as gc
-from game_state import GameState
 
 
 class MyGame(arcade.Window):
@@ -28,6 +27,7 @@ class MyGame(arcade.Window):
         arcade.set_background_color(arcade.color.BLUE_YONDER)
 
         self.back_ground = None
+        self.back_ground_list = None
 
         # Player related attributes.
         self.player = None
@@ -43,10 +43,6 @@ class MyGame(arcade.Window):
 
         self.game_timer = GameElapsedTime()
 
-        self.game_state = GameState.GAME_RUNNING
-
-        self.debug_mode = False
-
     def setup(self):
         """
         Configurer les variables de votre jeu ici. Il faut appeler la méthode une nouvelle
@@ -59,11 +55,12 @@ class MyGame(arcade.Window):
         self.back_ground = arcade.Sprite("assets/Background.png")
         self.back_ground.center_x = gc.SCREEN_WIDTH / 2
         self.back_ground.center_y = gc.SCREEN_HEIGHT / 2
+        self.back_ground_list = arcade.SpriteList()
+        self.back_ground_list.append(self.back_ground)
 
         self.enemy_list = arcade.SpriteList()
 
-        self.game_camera = arcade.Camera(gc.SCREEN_WIDTH, gc.SCREEN_HEIGHT)
-        self.gui_camera = arcade.Camera(gc.SCREEN_WIDTH, gc.SCREEN_HEIGHT)
+        self.gui_camera = arcade.camera.Camera2D()
 
         # Each two seconds, a new enemy fish will spawn.
         arcade.schedule(self.spawn_enemy_fish, 2)
@@ -86,34 +83,27 @@ class MyGame(arcade.Window):
         C'est la méthode que Arcade invoque à chaque "frame" pour afficher les éléments
         de votre jeu à l'écran.
         """
-        arcade.start_render()
+        self.clear()
 
-        self.back_ground.draw()
-
-        if self.game_state == GameState.GAME_RUNNING:
-            # Game camera rendering
-            self.game_camera.use()
-
+        # Game camera rendering
+        with self.default_camera.activate():
+            self.back_ground_list.draw()
             self.player.draw()
-
-            if self.debug_mode:
-                self.player.current_animation.draw_hit_box()
-                self.enemy_list.draw_hit_boxes()
-
             self.enemy_list.draw()
 
         # Gui camera rendering
-        self.gui_camera.use()
-        arcade.draw_rectangle_filled(gc.SCREEN_WIDTH // 2, gc.SCREEN_HEIGHT - 25, gc.SCREEN_WIDTH, 50, arcade.color.BLEU_DE_FRANCE)
+        with self.gui_camera.activate():
+            r = arcade.rect.XYWH(gc.SCREEN_WIDTH // 2, gc.SCREEN_HEIGHT - 25, gc.SCREEN_WIDTH, 50)
+            arcade.draw.draw_rect_outline(r,  arcade.color.BLEU_DE_FRANCE)
 
-        arcade.draw_text("Lives :", 5, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=100, align="center")
+            arcade.draw_text("Lives :", 5, gc.SCREEN_HEIGHT - 35, arcade.color.WHITE_SMOKE, 20, width=100, align="center")
 
-        arcade.draw_text(
-            f"Time played : {self.game_timer.get_time_string()}",
-            gc.SCREEN_WIDTH - 350, 
-            gc.SCREEN_HEIGHT - 35, 
-            arcade.color.WHITE_SMOKE, 
-            20, width=400, align="center")
+            arcade.draw_text(
+                f"Time played : {self.game_timer.get_time_string()}",
+                gc.SCREEN_WIDTH - 350,
+                gc.SCREEN_HEIGHT - 35,
+                arcade.color.WHITE_SMOKE,
+                20, width=400, align="center")
 
     def on_update(self, delta_time):
         """
@@ -123,16 +113,11 @@ class MyGame(arcade.Window):
         Paramètre:
             - delta_time : le nombre de milliseconde depuis le dernier update.
         """
-        if self.game_state == GameState.GAME_RUNNING:
-            # Calculate elapsed time
-            self.game_timer.accumulate()
+        # Calculate elapsed time
+        self.game_timer.accumulate()
 
-            self.player.update(delta_time)
-            self.enemy_list.update()
-
-            enemy_eaten = arcade.check_for_collision_with_list(self.player.current_animation, self.enemy_list)
-            for enemy in enemy_eaten:
-                enemy.remove_from_sprite_lists()
+        self.player.update(delta_time)
+        self.enemy_list.update()
 
     def update_player_speed(self):
         """
@@ -177,20 +162,6 @@ class MyGame(arcade.Window):
         elif key == arcade.key.S:
             self.player_move_down = True
             self.update_player_speed()
-
-        if key == arcade.key.ESCAPE:
-            if self.game_state == GameState.GAME_RUNNING:
-                self.game_state = GameState.GAME_PAUSE
-                self.game_timer.pause()
-            elif self.game_state == GameState.GAME_PAUSE:
-                self.game_state = GameState.GAME_RUNNING
-                self.game_timer.resume()
-
-        if key == arcade.key.H:
-            self.debug_mode = not self.debug_mode
-
-        if key == arcade.key.P:
-            self.player.current_animation.scale += 0.10
 
     def on_key_release(self, key, key_modifiers):
         """

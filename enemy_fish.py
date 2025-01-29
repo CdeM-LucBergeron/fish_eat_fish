@@ -75,7 +75,7 @@ class EnemyFish(FishAnimation):
         self.center_x = spawn_point[0]
         self.center_y = spawn_point[1]
 
-    def update(self):
+    def update(self, delta_time: float = 1 / 60, *args, **kwargs):
         if self.direction == Direction.LEFT:
             self.center_x += -self.change_x
         else:
