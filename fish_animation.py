@@ -17,12 +17,14 @@ class FishAnimation(arcade.Sprite):
     def __init__(self, spritesheet_path, flip=False, scale=0.35):
         super().__init__()
 
-        textures = arcade.load_spritesheet(spritesheet_path, 498, 327, 3, 12)
+        spritesheet = arcade.load_spritesheet(spritesheet_path)#, 498, 327, 3, 12)
+        textures = spritesheet.get_texture_grid((498, 327), 3, 12)
         if flip:
             flipped_textures = []
             for texture in textures:
+
                 image = PIL.ImageOps.mirror(texture.image)
-                flipped_textures.append(arcade.Texture(f"{texture.name}-flipped", image, "Simple", 4.5))
+                flipped_textures.append(arcade.Texture(image))
             self.textures = flipped_textures
         else:
             self.textures = textures

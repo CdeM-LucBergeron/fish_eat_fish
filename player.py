@@ -1,5 +1,7 @@
 from enum import Enum
 
+import arcade
+
 from fish_animation import FishAnimation
 
 
@@ -30,15 +32,19 @@ class Player:
             self.current_animation = self.right_animation
 
         self.lives = Player.PLAYER_LIVES
+        self.animation_list = arcade.SpriteList()
 
     def draw(self):
-        self.current_animation.draw()
+        self.animation_list.draw()
 
     def update(self, delta_time):      
         self.current_animation.center_x += self.current_animation.change_x
         self.current_animation.center_y += self.current_animation.change_y
 
         self.current_animation.on_update(delta_time)
+
+        self.animation_list.clear()
+        self.animation_list.append(self.current_animation)
 
     def change_direction(self, new_direction):
         """
