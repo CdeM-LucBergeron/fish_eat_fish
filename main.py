@@ -41,7 +41,7 @@ class MyGame(arcade.Window):
         self.game_camera = None
         self.gui_camera = None
 
-        self.time_layed_text = None
+        self.time_played_text = None
         self.lives_text = None
 
         self.game_timer = GameElapsedTime()
@@ -104,12 +104,12 @@ class MyGame(arcade.Window):
                                           20, width=100, align="center")
             self.lives_text.draw()
 
-            self.time_layed_text = arcade.Text(f"Time played : {self.game_timer.get_time_string()}",
-                                               gc.SCREEN_WIDTH - 350,
-                                               gc.SCREEN_HEIGHT - 35,
-                                               arcade.color.WHITE_SMOKE,
-                                               20, width=400, align="center")
-            self.time_layed_text.draw()
+            self.time_played_text = arcade.Text(f"Time played : {self.game_timer.get_time_string()}",
+                                                gc.SCREEN_WIDTH - 350,
+                                                gc.SCREEN_HEIGHT - 35,
+                                                arcade.color.WHITE_SMOKE,
+                                                20, width=400, align="center")
+            self.time_played_text.draw()
 
     def on_update(self, delta_time):
         """
